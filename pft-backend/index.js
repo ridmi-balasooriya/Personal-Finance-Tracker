@@ -1,6 +1,12 @@
 const express = require('express'); // Import Express
+const expenseRoute = require('./routes/expenses')
+const cors = require('cors') // Important for connecting React with Express
 const app = express(); // Create an Express app
-const PORT = 3000; // Define Port
+const PORT = 5000; // Define Port
+const db = require('./routes/db') //MongoDB connection
+
+//require('dotenv').config(); ENV Variables.
+
 
 //Add middleware to log request details
 app.use((req, res, next)=>{
@@ -9,7 +15,11 @@ app.use((req, res, next)=>{
 })
 
 //Add middleware to parse incoming JSON data
+app.use(cors());
 app.use(express.json());
+
+//Route
+app.use('/expenses', expenseRoute);
 
 // Define basic route
 app.get('/', (req, res) => {

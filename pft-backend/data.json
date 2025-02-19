@@ -3,5 +3,25 @@
     "description": "Bought coffee",
     "amount": 5,
     "date": "2025-01-16"
+  },
+  {
+    "description": "Weekly shopping",
+    "amount": "145",
+    "date": "2025-01-25"
+  },
+  {
+    "description": "Dinner",
+    "amount": "34",
+    "date": "2025-01-09"
+  },
+  {
+    "description": "Furniture",
+    "amount": "450",
+    "date": "2025-02-08"
+  },
+  {
+    "description": "test",
+    "amount": "45",
+    "date": "2025-02-13"
   }
 ]

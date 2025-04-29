@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const Expense = require('../models/Expense');
+const auth = require('../middleware/authMiddleware');
 
 //get all expenses
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try{
-        const expenses = await Expense.find();
+        const userId = req.user.id;
+        const expenses = await Expense.find({userId});
         res.json(expenses);
     }
     catch(err){
@@ -14,8 +16,9 @@ router.get('/', async (req, res) => {
 })
 
 //add new expense
-router.post('/', async(req, res) => {
-    const{description, amount, date} = req.body;
+router.post('/', auth, async(req, res) => {
+    const {description, amount, date} = req.body;
+    const userId = req.user.id; // Get user ID from token
 
     if(!description || !amount || !date){
         return res.status(400).json({message: "Missing required fields"});
@@ -24,7 +27,7 @@ router.post('/', async(req, res) => {
     try{
         const formatedDate = new Date(date).toISOString().split('T')[0]; //Extract YYYY-MM-DD
         console.log(formatedDate)
-        const newExpense = new Expense({description, amount, date: formatedDate}) //Craete Expense object
+        const newExpense = new Expense({ userId, description, amount, date: formatedDate}) //Craete Expense object
         await newExpense.save() //Save to MongoDB
         res.status(201).json({message: "Expense added succesfully", newExpense})
     }catch(err){

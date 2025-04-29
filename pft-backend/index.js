@@ -1,11 +1,16 @@
 const express = require('express'); // Import Express
-const expenseRoute = require('./routes/expenses')
 const cors = require('cors') // Important for connecting React with Express
-const app = express(); // Create an Express app
-const PORT = 5000; // Define Port
+
+const dotenv = require('dotenv');
 const db = require('./routes/db') //MongoDB connection
 
-//require('dotenv').config(); ENV Variables.
+// Import routes
+const expenseRoutes = require('./routes/expenses');
+const authRoutes = require('./routes/auth');
+
+require('dotenv').config();
+
+const app = express(); // Create an Express app
 
 
 //Add middleware to log request details
@@ -19,13 +24,15 @@ app.use(cors());
 app.use(express.json());
 
 //Route
-app.use('/expenses', expenseRoute);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/auth', authRoutes);
 
 // Define basic route
 app.get('/', (req, res) => {
     res.send('Hello, Ridmi! Your tracker is running!');
 })
 
+const PORT = process.env.PORT || 5000
 // Start the Server
 app.listen(PORT, ()=> {
     console.log(`Server is running on  http://localhost:${PORT}`);

@@ -5,3 +5,19 @@ body{
   text-align: center;
   margin:1em 0em;
 }
+.icon_button{
+  border: thin solid;
+  border-radius: 3px;
+  margin: 3px;
+  cursor: pointer;
+
+  
+}
+.edit{
+  background:#0c7402;
+  
+}
+.delete{
+  background:#8f0101;
+  
+}

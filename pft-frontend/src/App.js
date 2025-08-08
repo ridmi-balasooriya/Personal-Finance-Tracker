@@ -9,7 +9,8 @@ import ForgetPassword from './pages/ForgetPassword';
 import ResetPassword from './pages/ResetPassword';
 
 function App() {
-  const user = useContext(AuthContext);
+  const userObject = useContext(AuthContext);
+  const user = userObject.user;
   
   return(    
     <Routes>

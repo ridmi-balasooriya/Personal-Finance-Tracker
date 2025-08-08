@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import api from "../api";
 import AuthContext from "../context/authContext";
 import ExpenseForm from "../components/ExpenseForm";
+import iconEdit from "../assets/icons/edit.svg"
+import iconDelete from "../assets/icons/delete.svg";
 
 function Expenses(){
     const [expenses, setExpenses] = useState([]);
@@ -10,6 +12,13 @@ function Expenses(){
     const [error, setError] = useState('');
     const { user, logout} = useContext(AuthContext);
     const navigate = useNavigate();
+
+    // Edit Status
+    const [editId, setEditId] = useState('');
+    const [editDescription, setEditDescription] = useState('');
+    const [editAmount, setEditAmount] = useState('');
+    const [editDate, setEditDate] = useState('');
+
 
     useEffect(() => {
         if(!user || !user.token) return;
@@ -43,6 +52,18 @@ function Expenses(){
         setExpenses(prev => [...prev, newExpense]); //Add new expense to the table
     }
 
+    const handleEdit = (expense) => {
+        const formattedDate = new Date(expense.date).toISOString().split('T')[0]; // "YYYY-MM-DD"
+        setEditId(expense._id);
+        setEditDate(formattedDate);
+        setEditAmount(expense.amount);
+        setEditDescription(expense.description);
+    }
+
+    const handleUpdate = () => {
+        
+    }
+
     return(
         <>
             <div>
@@ -64,17 +85,45 @@ function Expenses(){
                             <table className='expense_table' border='1'>
                                 <thead>
                                     <tr>
-                                    <th>Description</th>
-                                    <th>Amount <small>(AED)</small></th>
                                     <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Amount <small>(AED)</small></th>                                    
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {expenses.map((expense) => (
                                     <tr key={expense._id}>
-                                        <td>{expense.description}</td>
-                                        <td>{expense.amount}</td>
-                                        <td>{expense.date}</td>
+                                        {editId === expense._id ? (
+                                            <>
+                                                <td>
+                                                    <input type="date" value={editDate} onChange={(e) => setEditDate(e.target.value)} />
+                                                </td> 
+                                                <td>
+                                                    <input type="text" value={editAmount} onChange={(e) => setEditAmount(e.target.value)} />
+                                                </td> 
+                                                <td>
+                                                    <input type="text" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
+                                                </td> 
+                                                <td span='2'>
+                                                    <button onClick={() => handleUpdate(expense._id)}>Update</button>
+                                                </td>
+                                            </>
+                                        ):(
+                                            <>
+                                                <td>{expense.date}</td>
+                                                <td>{expense.description}</td>
+                                                <td align="right">{expense.amount}</td> 
+                                                <td>
+                                                    <button className="icon_button edit" onClick={() => handleEdit(expense)}>
+                                                        <img src={iconEdit} alt="Edit record" width="20" height="20" /> 
+                                                    </button>
+                                                </td>     
+                                                <td><button className="icon_button delete">
+                                                    <img src={iconDelete} alt="Edit record" width="20" height="20" /></button>
+                                                </td>
+                                            </>
+                                        )}
+                                                                            
                                     </tr>
                                     ))
 

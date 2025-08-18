@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../api";
 import AuthContext from "../context/authContext";
 import ExpenseForm from "../components/ExpenseForm";
+import CategoryForm from "../components/CategoryForm";
 import iconEdit from "../assets/icons/edit.svg"
 import iconDelete from "../assets/icons/delete.svg";
 
@@ -15,10 +16,11 @@ function Expenses(){
 
     // Edit Status
     const [editId, setEditId] = useState('');
+    const [categories, setCategories] = useState([]);
+    const [editCategory, setEditCategory] = useState('');
     const [editDescription, setEditDescription] = useState('');
     const [editAmount, setEditAmount] = useState('');
     const [editDate, setEditDate] = useState('');
-
 
     useEffect(() => {
         if(!user || !user.token) return;
@@ -44,7 +46,23 @@ function Expenses(){
                 setLoading(false);
             }
         };
+
+        const fetchCategories = async () => {
+            try{
+                const token = user.token;
+
+                const {data} = await api.get('/categories', 
+                    {headers: {Authorization: `Bearer ${token}`}},
+                )
+
+                setCategories(data);
+
+            }catch(err){
+                console.error('Failed to load categories', err);
+            }
+        }
         fetchExpenses();
+        fetchCategories();
     }, [user]);
     
     const handleAddExpenses = (newExpenseData) => {
@@ -58,6 +76,7 @@ function Expenses(){
         setEditDate(formattedDate);
         setEditAmount(expense.amount);
         setEditDescription(expense.description);
+        setEditCategory(expense.category)
     }
 
     const handleUpdate = () => {
@@ -73,6 +92,11 @@ function Expenses(){
                 <div>
                     <ExpenseForm onExpenseAdded={handleAddExpenses} />
                 </div>
+                <div>
+                    <CategoryForm onCategoryAdded={(newCategory) => {
+                        console.log('New Category Added', newCategory);
+                    }} />
+                </div>
                 
                 <div>
                     {loading ?(
@@ -86,6 +110,7 @@ function Expenses(){
                                 <thead>
                                     <tr>
                                     <th>Date</th>
+                                    <th>Category</th>
                                     <th>Description</th>
                                     <th>Amount <small>(AED)</small></th>                                    
                                     </tr>
@@ -99,6 +124,13 @@ function Expenses(){
                                                     <input type="date" value={editDate} onChange={(e) => setEditDate(e.target.value)} />
                                                 </td> 
                                                 <td>
+                                                    <select value={editCategory} onChange={(e) => setEditCategory(e.target.value)}>
+                                                        {categories.map(cat => (
+                                                            <option key={cat._id} value={cat._id}>{cat.name}</option>
+                                                        ))}
+                                                    </select>
+                                                </td>
+                                                <td>
                                                     <input type="text" value={editAmount} onChange={(e) => setEditAmount(e.target.value)} />
                                                 </td> 
                                                 <td>
@@ -111,6 +143,9 @@ function Expenses(){
                                         ):(
                                             <>
                                                 <td>{expense.date}</td>
+                                                <td>
+                                                    {expense.category?.name || 'N/A'}
+                                                </td>
                                                 <td>{expense.description}</td>
                                                 <td align="right">{expense.amount}</td> 
                                                 <td>

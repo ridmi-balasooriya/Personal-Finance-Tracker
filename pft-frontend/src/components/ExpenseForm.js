@@ -1,14 +1,36 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import AuthContext from "../context/authContext";
 import api from "../api";
 
 function ExpenseForm({onExpenseAdded}){   
+    const [categories, setCategories] = useState([]);
+    
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const [date, setDate] = useState('');
-    const [error, setError] = useState('');
-    const {user} = useContext(AuthContext);
+    const [category, setCategory] = useState('');
 
+    const [error, setError] = useState('');
+    const {user} = useContext(AuthContext);   
+    
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try{
+                const token = user.token;
+                const {data} = await api.get('/categories',
+                   { headers: {Authorization: `Bearer ${token}`}}
+                );
+                setCategories(data);
+                if(data.length > 0) setCategory(data[0]._id);
+            }catch(err) {
+                console.error('Failed to load categories, error');
+            }
+        }
+        fetchCategories();
+    }, []);
+    
+ 
+    
     const handdleSubmit = async (e) => {
         e.preventDefault();
 
@@ -18,23 +40,23 @@ function ExpenseForm({onExpenseAdded}){
             return;
         }
 
-        if (!user || !user.token) {  // ✅ Ensure token is available
+        if (!user || !user.token) {  // Ensure token is available
             setError("User not authenticated. Please login.");
             return;
         }
 
         try{
             const token = user.token;
-            console.log("Sending token:", token);
             
             const {data} = await api.post('/expenses', 
-                {description, amount, date},
-                { headers: {Authorization: `Bearer ${token}`}}
-            );
+                {description, amount, date, category}, { 
+                    headers: {Authorization: `Bearer ${token}`}
+            });
             onExpenseAdded(data);
             setDescription('');
             setAmount('');
             setDate('');
+            setCategory('');
         }
         catch(err){
             console.error('Error adding expnenses', err);
@@ -47,6 +69,13 @@ function ExpenseForm({onExpenseAdded}){
                 {error && <span className="message_span error">{ error }</span>}
                 <div>
                     <form onSubmit={handdleSubmit}>
+                        <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+                            <option value="N/A">-- Select Category --</option>
+                            {categories.map(cat => (
+                                <option key={cat._id} value={cat._id}>{cat.name}</option>
+                            ))}
+                            
+                        </select>
                         <input type="text" placeholder="Expense Description" value={description} onChange={(e) => setDescription(e.target.value)} />
                         <input type="number" placeholder="Expense Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
                         <input type="date" placeholder="Expense Date" value={date} onChange={(e) => setDate(e.target.value)} />

@@ -6,6 +6,7 @@ const db = require('./routes/db') //MongoDB connection
 
 // Import routes
 const expenseRoutes = require('./routes/expenses');
+const categoryRoutes = require('./routes/categories');
 const authRoutes = require('./routes/auth');
 
 require('dotenv').config();
@@ -26,6 +27,7 @@ app.use(express.json());
 //Route
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/categories', categoryRoutes);
 
 // Define basic route
 app.get('/', (req, res) => {

@@ -7,7 +7,7 @@ import ExpencseCategoryForm from "../components/ExpencseCategoryForm";
 import iconEdit from "../assets/icons/edit.svg"
 import iconDelete from "../assets/icons/delete.svg";
 
-function Expenses(){
+const Expenses = () => {
     const [expenses, setExpenses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');

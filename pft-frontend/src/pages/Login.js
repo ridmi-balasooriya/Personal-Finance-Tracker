@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import api from "../api";
 import AuthContext from "../context/authContext";
 
-function Login({setUser}){
+const Login = ({setUser}) => {
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [userData, setUserData] = useState({});

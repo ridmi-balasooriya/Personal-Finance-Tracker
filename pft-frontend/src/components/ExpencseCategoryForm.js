@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import api from "../api";
 import AuthContext from "../context/authContext";
 
-function ExpencseCategoryForm({onCategoryAdded}){
+const ExpencseCategoryForm = ({onCategoryAdded}) => {
     const [categoryName, setCategoryName] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');

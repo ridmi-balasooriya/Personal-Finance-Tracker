@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import api from "../api";
 
-function ResetPassword() {
+const ResetPassword = () => {
+
     const { token } = useParams();
     const navigate = useNavigate();
     const [password, setPassword] = useState('')

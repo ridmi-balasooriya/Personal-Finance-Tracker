@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import AuthContext from "../context/authContext";
 import api from "../api";
 
-function ExpenseForm({categories, onExpenseAdded}){   
+const ExpenseForm = ({categories, onExpenseAdded}) => {
     
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');

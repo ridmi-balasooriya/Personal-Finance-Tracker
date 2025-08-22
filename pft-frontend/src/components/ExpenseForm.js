@@ -1,9 +1,8 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import AuthContext from "../context/authContext";
 import api from "../api";
 
-function ExpenseForm({onExpenseAdded}){   
-    const [categories, setCategories] = useState([]);
+function ExpenseForm({categories, onExpenseAdded}){   
     
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
@@ -12,24 +11,6 @@ function ExpenseForm({onExpenseAdded}){
 
     const [error, setError] = useState('');
     const {user} = useContext(AuthContext);   
-    
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try{
-                const token = user.token;
-                const {data} = await api.get('/categories',
-                   { headers: {Authorization: `Bearer ${token}`}}
-                );
-                setCategories(data);
-                if(data.length > 0) setCategory(data[0]._id);
-            }catch(err) {
-                console.error('Failed to load categories, error');
-            }
-        }
-        fetchCategories();
-    }, []);
-    
- 
     
     const handdleSubmit = async (e) => {
         e.preventDefault();

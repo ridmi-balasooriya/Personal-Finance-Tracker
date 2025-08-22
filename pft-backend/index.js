@@ -2,12 +2,15 @@ const express = require('express'); // Import Express
 const cors = require('cors') // Important for connecting React with Express
 
 const dotenv = require('dotenv');
-const db = require('./routes/db') //MongoDB connection
+const connectDB = require('./routes/db') //MongoDB connection
 
 // Import routes
 const expenseRoutes = require('./routes/expenses');
 const categoryRoutes = require('./routes/categories');
 const authRoutes = require('./routes/auth');
+
+//Import seeding files
+const seedCategories = require('./seed/seedCategories');
 
 require('dotenv').config();
 
@@ -35,7 +38,12 @@ app.get('/', (req, res) => {
 })
 
 const PORT = process.env.PORT || 5000
-// Start the Server
-app.listen(PORT, ()=> {
-    console.log(`Server is running on  http://localhost:${PORT}`);
+
+connectDB().then(async () => {
+    await seedCategories();
+    
+    // Start the Server
+    app.listen(PORT, ()=> {
+        console.log(`Server is running on  http://localhost:${PORT}`);
+    })
 })

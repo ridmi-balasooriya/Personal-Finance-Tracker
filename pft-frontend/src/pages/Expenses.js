@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../api";
 import AuthContext from "../context/authContext";
 import ExpenseForm from "../components/ExpenseForm";
-import CategoryForm from "../components/CategoryForm";
+import ExpencseCategoryForm from "../components/ExpencseCategoryForm";
 import iconEdit from "../assets/icons/edit.svg"
 import iconDelete from "../assets/icons/delete.svg";
 
@@ -51,7 +51,7 @@ function Expenses(){
             try{
                 const token = user.token;
 
-                const {data} = await api.get('/categories', 
+                const {data} = await api.get('/categories?type=expense', 
                     {headers: {Authorization: `Bearer ${token}`}},
                 )
 
@@ -76,7 +76,7 @@ function Expenses(){
         setEditDate(formattedDate);
         setEditAmount(expense.amount);
         setEditDescription(expense.description);
-        setEditCategory(expense.category)
+        setEditCategory(expense.category._id)
     }
 
     const handleUpdate = () => {
@@ -90,10 +90,12 @@ function Expenses(){
                 <button onClick={() => logout(navigate)}>Log Out</button> {/* Use logout from context */}
 
                 <div>
-                    <ExpenseForm onExpenseAdded={handleAddExpenses} />
+                    <ExpenseForm categories={categories}  onExpenseAdded={handleAddExpenses} />
                 </div>
                 <div>
-                    <CategoryForm onCategoryAdded={(newCategory) => {
+                    <ExpencseCategoryForm onCategoryAdded={(newCategory) => {
+                        setCategories(prev => [...prev, newCategory]);
+                        setEditCategory(newCategory._id);
                         console.log('New Category Added', newCategory);
                     }} />
                 </div>
@@ -131,11 +133,11 @@ function Expenses(){
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" value={editAmount} onChange={(e) => setEditAmount(e.target.value)} />
-                                                </td> 
-                                                <td>
                                                     <input type="text" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
                                                 </td> 
+                                                <td>
+                                                    <input type="text" value={editAmount} onChange={(e) => setEditAmount(e.target.value)} />
+                                                </td>                                                 
                                                 <td span='2'>
                                                     <button onClick={() => handleUpdate(expense._id)}>Update</button>
                                                 </td>
@@ -147,7 +149,7 @@ function Expenses(){
                                                     {expense.category?.name || 'N/A'}
                                                 </td>
                                                 <td>{expense.description}</td>
-                                                <td align="right">{expense.amount}</td> 
+                                                <td align="right">{Number(expense.amount).toFixed(2)}</td> 
                                                 <td>
                                                     <button className="icon_button edit" onClick={() => handleEdit(expense)}>
                                                         <img src={iconEdit} alt="Edit record" width="20" height="20" /> 

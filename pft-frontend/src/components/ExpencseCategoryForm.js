@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import api from "../api";
 import AuthContext from "../context/authContext";
 
-function CategoryForm({onCategoryAdded}){
+function ExpencseCategoryForm({onCategoryAdded}){
     const [categoryName, setCategoryName] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -23,7 +23,7 @@ function CategoryForm({onCategoryAdded}){
             const token = user?.token;
 
             const {data} = await api.post('/categories',
-                {name: categoryName},
+                {name: categoryName, type:'expense'},
                 { headers: {Authorization: `Bearer ${token}`}}
             );
 
@@ -53,4 +53,4 @@ function CategoryForm({onCategoryAdded}){
     );
 }
 
-export default CategoryForm;
+export default ExpencseCategoryForm;

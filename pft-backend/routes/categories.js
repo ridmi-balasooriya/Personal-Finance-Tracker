@@ -6,8 +6,23 @@ const auth = require('../middleware/authMiddleware');
 //Get all categories
 router.get('/', auth, async(req, res) => {
     try{
-        const categories = await Category.find().sort({name:1}); //Sort alphabetically
+        const {type} = req.query;
+        let filter = {};
+
+        if (type){
+            filter.type = type.toLowerCase();
+        }
+
+        const categories = await Category.find({
+            ...filter,
+            $or: [
+                {user:null}, // common
+                {user: req.user._id} // personal
+            ]
+        }).sort({name:1}); //Sort alphabetically
+
         res.json(categories);
+
     }catch(err){
         res.status(500).json({message: err.message});
     }
@@ -16,12 +31,21 @@ router.get('/', auth, async(req, res) => {
 router.post('/', auth, async(req, res) => {
     try{
 
-        const {name} = req.body;
+        const {name, type} = req.body;
         if(!name){
             return res.status(400).json({message: "Category Name is Required.!"})
         }
 
-        const category = new Category({name})
+        if(!['expense', 'income'].includes(type.toLowerCase())){
+            return res.status(400).json({message: "Type must be either expense or income"})
+        }
+
+        const category = new Category({
+            name, 
+            type: type.toLowerCase(),
+            user: req.user._id, // belongs only to this user
+        });
+
         await category.save();
         res.status(201).json(category);
 

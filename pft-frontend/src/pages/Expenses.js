@@ -6,6 +6,7 @@ import ExpenseForm from "../components/ExpenseForm";
 import ExpencseCategoryForm from "../components/ExpencseCategoryForm";
 import iconEdit from "../assets/icons/edit.svg"
 import iconDelete from "../assets/icons/delete.svg";
+import { Button, Input, Select} from "../components/ui";
 
 const Expenses = () => {
     const [expenses, setExpenses] = useState([]);
@@ -123,23 +124,19 @@ const Expenses = () => {
                                         {editId === expense._id ? (
                                             <>
                                                 <td>
-                                                    <input type="date" value={editDate} onChange={(e) => setEditDate(e.target.value)} />
+                                                    <Input type="date" value={editDate} onChange={(e) => setEditDate(e.target.value)} />
                                                 </td> 
                                                 <td>
-                                                    <select value={editCategory} onChange={(e) => setEditCategory(e.target.value)}>
-                                                        {categories.map(cat => (
-                                                            <option key={cat._id} value={cat._id}>{cat.name}</option>
-                                                        ))}
-                                                    </select>
+                                                    <Select value={editCategory} onChange={(e) => setEditCategory(e.target.value)} options={categories}></Select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
+                                                    <Input type="text" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
                                                 </td> 
                                                 <td>
-                                                    <input type="text" value={editAmount} onChange={(e) => setEditAmount(e.target.value)} />
+                                                    <Input  type="text" value={editAmount} onChange={(e) => setEditAmount(e.target.value)} />
                                                 </td>                                                 
                                                 <td span='2'>
-                                                    <button onClick={() => handleUpdate(expense._id)}>Update</button>
+                                                    <Button onClick={() => handleUpdate(expense._id)} variant="primary">Update</Button>
                                                 </td>
                                             </>
                                         ):(
@@ -151,12 +148,14 @@ const Expenses = () => {
                                                 <td>{expense.description}</td>
                                                 <td align="right">{Number(expense.amount).toFixed(2)}</td> 
                                                 <td>
-                                                    <button className="icon_button edit" onClick={() => handleEdit(expense)}>
-                                                        <img src={iconEdit} alt="Edit record" width="20" height="20" /> 
-                                                    </button>
+                                                    <Button variant="icon_button edit" onClick={() => handleEdit(expense)}>
+                                                        <img src={iconEdit} alt="Edit record" width="20" height="20" />
+                                                    </Button>
                                                 </td>     
-                                                <td><button className="icon_button delete">
-                                                    <img src={iconDelete} alt="Edit record" width="20" height="20" /></button>
+                                                <td>
+                                                    <Button variant="icon_button delete" onClick={() => handleEdit(expense)}>
+                                                        <img src={iconDelete} alt="Delete record" width="20" height="20" />
+                                                    </Button>
                                                 </td>
                                             </>
                                         )}

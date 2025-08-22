@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
+import { Button, Input} from "../components/ui";
 
 const Register = () => {
 
@@ -47,11 +48,11 @@ const Register = () => {
                 {success && <span className="message_span success">{success}</span>}
                 <div>
                     <form onSubmit={handleRegister}>
-                        <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required/>
-                        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-                        <button type="submit">Register</button>
+                        <Input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+                        <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                        <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        <Input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                        <Button type="submit">Register</Button>
                         <p>Already have an account? <a href="/login">Login</a></p>
                     </form>
                 </div>

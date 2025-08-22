@@ -5,13 +5,18 @@ body{
   text-align: center;
   margin:1em 0em;
 }
-.icon_button{
-  border: thin solid;
-  border-radius: 3px;
-  margin: 3px;
-  cursor: pointer;
 
-  
+/* Button Style **/
+.button{
+  border-radius: 3px;
+  padding: 5px;
+  margin:auto 5px;
+  border: thin solid;
+  box-shadow: 1px 1px #ccc;
+}
+.icon_button{
+  margin-top: 2px;
+  font-size: 2px;
 }
 .edit{
   background:#0c7402;
@@ -20,4 +25,25 @@ body{
 .delete{
   background:#8f0101;
   
+}
+.primary{
+    background:#fff;    
+    border-color: #ccc;
+}
+
+/* Input Style*/
+.input_div{
+  display: inline-block;
+}
+
+.input_div .default{
+  background: #fff;
+  border: thin solid #ccc;
+  padding: 5px;
+  margin: 3px;
+}
+
+.input_div .default:focus{
+  box-shadow: 1px 1px #c3c3c3;
+  outline: #fff;
 }

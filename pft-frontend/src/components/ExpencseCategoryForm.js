@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import api from "../api";
 import AuthContext from "../context/authContext";
+import {Button, Input} from "./ui";
 
 const ExpencseCategoryForm = ({onCategoryAdded}) => {
     const [categoryName, setCategoryName] = useState('');
@@ -45,8 +46,8 @@ const ExpencseCategoryForm = ({onCategoryAdded}) => {
     return(
         <>
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="New Category" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
-                <button type="submit" disabled={loading}>{loading? "Adding..." : "Add Category"}</button>
+                <Input type='text' placeholder='New Category' value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
+                <Button type="submit" disabled={loading} variant="primary">{loading? "Adding..." : "Add Category"}</Button>
                 {error && <span className="message_span error">{error}</span>}
             </form>
         </>

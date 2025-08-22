@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import api from "../api";
+import { Button, Input} from "../components/ui";
 
 const ResetPassword = () => {
 
@@ -51,9 +52,9 @@ const ResetPassword = () => {
                 {validToken ? (
                     <div>
                         <form onSubmit={handleSubmit}>
-                            <input type="password" placeholder="New Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                            <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-                            <button type="submit">Reset Password</button>
+                            <Input type="password" placeholder="New Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                            <Input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                            <Button type="submit">Reset Password</Button>
                         </form>
                     </div>
                 ) : (

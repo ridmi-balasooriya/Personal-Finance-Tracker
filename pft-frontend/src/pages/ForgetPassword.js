@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import api from '../api';
+import { Button, Input} from "../components/ui";
 
 const ForgetPassword = () => {
 
@@ -26,8 +27,8 @@ const ForgetPassword = () => {
                 {message && <span>{message}</span>}
                 <div>
                     <form onSubmit={handleSubmit}>
-                        <input type='email' placeholder='Enter Your Email' value={email} onChange={(e) => setEmail(e.target.value)} required />
-                        <button type='submit'>Send Reset Link</button>
+                        <Input type='email' placeholder='Enter Your Email' value={email} onChange={(e) => setEmail(e.target.value)} required />
+                        <Button type="submit">Send Reset Link</Button>
                     </form>
                 </div>
             </div>

@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import AuthContext from "../context/authContext";
+import { Button, Input} from "../components/ui";
 
 const Login = ({setUser}) => {
 
@@ -44,9 +45,9 @@ const Login = ({setUser}) => {
                 {error && <span className="message_span error">{ error }</span>}
                 <div>
                     <form onSubmit={handleLogin}>
-                        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        <button type="submit">Login</button>                        
+                        <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                        <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        <Button type="submit">Login</Button>                       
                     </form>
                     <p>
                         Don't have an account? <a href="/register">Register</a> |

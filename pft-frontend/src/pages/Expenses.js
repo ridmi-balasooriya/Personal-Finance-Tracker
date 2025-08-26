@@ -2,16 +2,17 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import AuthContext from "../context/authContext";
-import ExpenseForm from "../components/ExpenseForm";
+
+import ExpenseForm from "../components/expense/ExpenseForm";
 import ExpencseCategoryForm from "../components/ExpencseCategoryForm";
-import iconEdit from "../assets/icons/edit.svg"
-import iconDelete from "../assets/icons/delete.svg";
-import { Button, Input, Select} from "../components/ui";
+import EditRow from "../components/expense/EditExpenseRow";
+import { Alert } from "../components/ui";
+import EditButton from "../components/ui/EditButton";
+import DeleteButton from "../components/ui/DeleteButton";
 
 const Expenses = () => {
     const [expenses, setExpenses] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
     const { user, logout} = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -22,6 +23,9 @@ const Expenses = () => {
     const [editDescription, setEditDescription] = useState('');
     const [editAmount, setEditAmount] = useState('');
     const [editDate, setEditDate] = useState('');
+
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
     useEffect(() => {
         if(!user || !user.token) return;
@@ -80,8 +84,39 @@ const Expenses = () => {
         setEditCategory(expense.category._id)
     }
 
-    const handleUpdate = () => {
+    const handleUpdate = async (expenseId) => {
         
+        try{
+            const token = user.token;
+            
+            const updateExpense = {
+                date: editDate,
+                category: editCategory,
+                description: editDescription,
+                amount: editAmount,
+            };
+           
+            const { data } = await api.put(`expenses/${expenseId}`,
+                updateExpense,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            setExpenses((prev) => 
+                prev.map((exp) => (exp._id === expenseId ? data.updatedExpense : exp))
+            )
+
+            setEditId('');
+            setEditDate('');
+            setEditCategory('');
+            setEditDescription('');
+            setEditAmount('');
+
+            setSuccess('Expense record updated successfully.')
+
+        }catch(err) {   
+            console.error('Fail to update expese: ', err);
+            alert('Error updating expense. Please try again.');
+        }
     }
 
     return(
@@ -102,12 +137,13 @@ const Expenses = () => {
                 </div>
                 
                 <div>
+                    {success && <Alert type="success">{success}</Alert>}
                     {loading ?(
                             <p>Loading expenses...</p>
                         ) : error ? (
-                            <span className="message_span error">{ error }</span>
+                            <Alert type="error">{ error }</Alert>
                         ) : expenses.length === 0 ? (
-                            <span className="message_span error">No expenses found</span>
+                            <Alert type="info">No expenses found</Alert>
                         ) : (
                             <table className='expense_table' border='1'>
                                 <thead>
@@ -122,23 +158,18 @@ const Expenses = () => {
                                     {expenses.map((expense) => (
                                     <tr key={expense._id}>
                                         {editId === expense._id ? (
-                                            <>
-                                                <td>
-                                                    <Input type="date" value={editDate} onChange={(e) => setEditDate(e.target.value)} />
-                                                </td> 
-                                                <td>
-                                                    <Select value={editCategory} onChange={(e) => setEditCategory(e.target.value)} options={categories}></Select>
-                                                </td>
-                                                <td>
-                                                    <Input type="text" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
-                                                </td> 
-                                                <td>
-                                                    <Input  type="text" value={editAmount} onChange={(e) => setEditAmount(e.target.value)} />
-                                                </td>                                                 
-                                                <td span='2'>
-                                                    <Button onClick={() => handleUpdate(expense._id)} variant="primary">Update</Button>
-                                                </td>
-                                            </>
+                                            <EditRow 
+                                                editDate={editDate}
+                                                editDescription={editDescription}
+                                                editCategory={editCategory}
+                                                editAmount={editAmount}
+                                                categories={categories}
+                                                onChangeDate={setEditDate}
+                                                onChangeDescription={setEditDescription}
+                                                onChangeCategory={setEditCategory}
+                                                onChangeAmount={setEditAmount}
+                                                onUpdate={(e) => handleUpdate(expense._id)}
+                                            ></EditRow>
                                         ):(
                                             <>
                                                 <td>{expense.date}</td>
@@ -148,14 +179,10 @@ const Expenses = () => {
                                                 <td>{expense.description}</td>
                                                 <td align="right">{Number(expense.amount).toFixed(2)}</td> 
                                                 <td>
-                                                    <Button variant="icon_button edit" onClick={() => handleEdit(expense)}>
-                                                        <img src={iconEdit} alt="Edit record" width="20" height="20" />
-                                                    </Button>
+                                                    <EditButton onEdit={() => handleEdit(expense)}></EditButton>
                                                 </td>     
                                                 <td>
-                                                    <Button variant="icon_button delete" onClick={() => handleEdit(expense)}>
-                                                        <img src={iconDelete} alt="Delete record" width="20" height="20" />
-                                                    </Button>
+                                                    <DeleteButton onDelete={() => handleEdit(expense)}></DeleteButton>
                                                 </td>
                                             </>
                                         )}

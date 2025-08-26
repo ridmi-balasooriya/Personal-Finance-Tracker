@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
-import AuthContext from "../context/authContext";
-import api from "../api";
-import { Button, Input, Select } from "./ui";
+import AuthContext from "../../context/authContext";
+import api from "../../api";
+import { Button, Input, Select, Alert } from "../ui";
 
 const ExpenseForm = ({categories, onExpenseAdded}) => {
     
@@ -11,12 +11,20 @@ const ExpenseForm = ({categories, onExpenseAdded}) => {
     const [category, setCategory] = useState('');
 
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const {user} = useContext(AuthContext);   
+
+    const clearAfterDelay = (settler, delay = '3000') => {
+        setTimeout(() => {
+            settler('');
+        }, delay)
+    };
     
     const handdleSubmit = async (e) => {
         e.preventDefault();
 
         setError('');
+        setSuccess('');
         if(!description || !amount || !date){
             setError('Please fill required fields');
             return;
@@ -39,16 +47,21 @@ const ExpenseForm = ({categories, onExpenseAdded}) => {
             setAmount('');
             setDate('');
             setCategory('');
+            setSuccess('Expense added successfully');
+            clearAfterDelay(setSuccess);
         }
         catch(err){
             console.error('Error adding expnenses', err);
+            setError('Failed to add expense');            
+            clearAfterDelay(setError);
         }
     }
 
     return(
         <>
             <div>
-                {error && <span className="message_span error">{ error }</span>}
+                {success && <Alert type="success">{ success }</Alert>}
+                {error && <Alert type="error">{ error }</Alert>}
                 <div>
                     <form onSubmit={handdleSubmit}>
                         <Select value={category} onChange={(e) => setCategory(e.target.value)} options={categories} required></Select>

@@ -1,5 +1,3 @@
-import React from "react";
-
 const Select = ({label, value, onChange, options, variant='default'}) => {
     const baseStyle = 'select'
 

@@ -39,4 +39,33 @@ router.post('/', auth, async(req, res) => {
     }
 })
 
+router.put('/:id', auth, async (req, res) => {
+    const {date, category, description, amount} = req.body;
+    const userId = req.user.id;
+
+    if(!date || !category || !description || !amount){
+        return res.status(400).json({ message: 'Missing required fields.' });
+    }
+
+    try{
+        const expense = await Expense.findOne({ _id: req.params.id, userId })
+        if(!expense){
+            return res.status(404).json({ message: "Expense not found" });
+        }
+        
+        expense.date = new Date(date).toISOString().split('T')[0];
+        expense.category = category;
+        expense.description = description;
+        expense.amount = amount;
+
+        await expense.save();
+        await expense.populate('category');
+
+        res.json({ message: 'Expense update successfully', updatedExpense: expense});
+
+    }catch(err) {
+        return res.status(500).json({ message: err.message })
+    }
+})
+
 module.exports = router;

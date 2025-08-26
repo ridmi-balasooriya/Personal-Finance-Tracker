@@ -1,5 +1,3 @@
-import React from "react";
-
 function Button ({children, onClick, type='button', variant='primary', classes}) {
     
     const baseStlye = "button";

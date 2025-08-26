@@ -47,3 +47,30 @@ body{
   box-shadow: 1px 1px #c3c3c3;
   outline: #fff;
 }
+
+/* Alert Span */
+.message_span {
+  display: inline-block;
+  margin: 4px 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.message_span.success {
+  background-color: #e6ffed;
+  color: #047857;
+  border: 1px solid #34d399;
+}
+
+.message_span.error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #f87171;
+}
+
+.message_span.info {
+  background-color: #eff6ff;
+  color: #1e3a8a;
+  border: 1px solid #60a5fa;
+}

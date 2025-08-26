@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import AuthContext from "../context/authContext";
-import { Button, Input} from "../components/ui";
+import { Button, Input, Alert} from "../components/ui";
 
 const Login = ({setUser}) => {
 
@@ -42,7 +42,7 @@ const Login = ({setUser}) => {
         <>
             <div>
                 <h2>Login</h2>
-                {error && <span className="message_span error">{ error }</span>}
+                {error && <Alert type="error">{ error }</Alert>}
                 <div>
                     <form onSubmit={handleLogin}>
                         <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />

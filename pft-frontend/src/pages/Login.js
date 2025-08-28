@@ -42,7 +42,7 @@ const Login = ({setUser}) => {
         <>
             <div>
                 <h2>Login</h2>
-                {error && <Alert type="error">{ error }</Alert>}
+                {error && <Alert type="error" onClear={()=>setError('')}>{ error }</Alert>}
                 <div>
                     <form onSubmit={handleLogin}>
                         <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />

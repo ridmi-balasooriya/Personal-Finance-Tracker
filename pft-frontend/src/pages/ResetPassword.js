@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import api from "../api";
-import { Button, Input} from "../components/ui";
+import { Button, Input, Alert} from "../components/ui";
 
 const ResetPassword = () => {
 
@@ -9,7 +9,8 @@ const ResetPassword = () => {
     const navigate = useNavigate();
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [message, setMessage] = useState('');
+     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const [validToken, setValidToken] = useState(false);
 
     useEffect(() => {
@@ -19,7 +20,7 @@ const ResetPassword = () => {
                 setValidToken(true);
             }
             catch(err){
-                setMessage('Invalid or Expired Token')
+                setError('Invalid or Expired Token')
             }
         }
         checkToken();
@@ -30,17 +31,17 @@ const ResetPassword = () => {
         e.preventDefault();
 
         if(password !== confirmPassword){
-            setMessage('Password do not match.');
+            setError('Password do not match.');
             return;
         }
 
         try{
             const res = await api.post(`/auth/reset-password/${token}`, {password});
-            setMessage(res.data.message);
+            setSuccess(res.data.message);
             setTimeout( () => navigate('/login'), 2000);
         }
         catch(err){
-            setMessage(err.response?.data?.message || 'Something went wrong');
+            setError(err.response?.data?.message || 'Something went wrong');
         }
     }
 
@@ -48,7 +49,8 @@ const ResetPassword = () => {
         <>
             <div>
                 <h2>Reset Password</h2>
-                { message && <span>{message}</span>}
+                {success && <Alert type="success" onClear={() => setSuccess('')}>{ success }</Alert>}
+                {error && <Alert type="error" onClear={() => setError('')}>{ error }</Alert>}
                 {validToken ? (
                     <div>
                         <form onSubmit={handleSubmit}>

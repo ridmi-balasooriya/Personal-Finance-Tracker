@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import api from '../api';
-import { Button, Input} from "../components/ui";
+import { Button, Input, Alert} from "../components/ui";
 
 const ForgetPassword = () => {
 
     const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
+        const [success, setSuccess] = useState('');
 
     const handleSubmit = async (e) => {
         
@@ -13,10 +14,10 @@ const ForgetPassword = () => {
         
         try{
             const res = await api.post('/auth/forget-password', {email});
-            setMessage(res.data.message);
+            setSuccess(res.data.message);
         }
         catch(err){
-            setMessage( err.response?.data?.message || 'Something went wrong.')
+            setError( err.response?.data?.message || 'Something went wrong.')
         }
     }
 
@@ -24,7 +25,8 @@ const ForgetPassword = () => {
         <>
             <div>
                 <h2>Forgot Password</h2>
-                {message && <span>{message}</span>}
+                {success && <Alert type="success" onClear={() => setSuccess('')}>{ success }</Alert>}
+                {error && <Alert type="error" onClear={() => setError('')}>{ error }</Alert>}
                 <div>
                     <form onSubmit={handleSubmit}>
                         <Input type='email' placeholder='Enter Your Email' value={email} onChange={(e) => setEmail(e.target.value)} required />

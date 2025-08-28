@@ -14,12 +14,7 @@ const ExpenseForm = ({categories, onExpenseAdded}) => {
     const [success, setSuccess] = useState('');
     const {user} = useContext(AuthContext);   
 
-    const clearAfterDelay = (settler, delay = '3000') => {
-        setTimeout(() => {
-            settler('');
-        }, delay)
-    };
-    
+
     const handdleSubmit = async (e) => {
         e.preventDefault();
 
@@ -48,20 +43,18 @@ const ExpenseForm = ({categories, onExpenseAdded}) => {
             setDate('');
             setCategory('');
             setSuccess('Expense added successfully');
-            clearAfterDelay(setSuccess);
         }
         catch(err){
             console.error('Error adding expnenses', err);
             setError('Failed to add expense');            
-            clearAfterDelay(setError);
         }
     }
 
     return(
         <>
             <div>
-                {success && <Alert type="success">{ success }</Alert>}
-                {error && <Alert type="error">{ error }</Alert>}
+                {success && <Alert type="success" onClear={() => setSuccess('')}>{ success }</Alert>}
+                {error && <Alert type="error" onClear={() => setError('')}>{ error }</Alert>}
                 <div>
                     <form onSubmit={handdleSubmit}>
                         <Select value={category} onChange={(e) => setCategory(e.target.value)} options={categories} required></Select>

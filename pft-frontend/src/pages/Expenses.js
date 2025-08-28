@@ -70,11 +70,13 @@ const Expenses = () => {
         fetchCategories();
     }, [user]);
     
+    //Update List with New Expenses
     const handleAddExpenses = (newExpenseData) => {
         const newExpense = newExpenseData.newExpense;
         setExpenses(prev => [...prev, newExpense]); //Add new expense to the table
     }
 
+    //Edit Records
     const handleEdit = (expense) => {
         const formattedDate = new Date(expense.date).toISOString().split('T')[0]; // "YYYY-MM-DD"
         setEditId(expense._id);
@@ -84,6 +86,7 @@ const Expenses = () => {
         setEditCategory(expense.category._id)
     }
 
+    //Update Records
     const handleUpdate = async (expenseId) => {
         
         try{
@@ -111,11 +114,33 @@ const Expenses = () => {
             setEditDescription('');
             setEditAmount('');
 
-            setSuccess('Expense record updated successfully.')
+            setSuccess('✅ Expense record updated successfully.')
 
         }catch(err) {   
             console.error('Fail to update expese: ', err);
-            alert('Error updating expense. Please try again.');
+            setError('Error updating expense. Please try again.');
+        }
+    }
+
+    //Delete Record
+    const handleDelete = async (expenseId) => {
+
+        if(!window.confirm('Are you sure, you want to DELETE this expense?')) return;
+
+        try{
+            const token = user.token;
+
+            const {data} = await api.delete(`expenses/${expenseId}`, {
+                headers: { Authorization: `Bearer ${token}`},
+            });
+            setSuccess(data.message)
+            //remove from local state
+            setExpenses((prev) => prev.filter((exp) => exp._id !== expenseId));
+
+
+        }catch(err) {
+            console.error('Failed to delete expense', err);
+            setError('Failed to delete expense. Please try again.')
         }
     }
 
@@ -137,11 +162,11 @@ const Expenses = () => {
                 </div>
                 
                 <div>
-                    {success && <Alert type="success">{success}</Alert>}
+                    {success && <Alert type="success" onClear={() => setSuccess('')}>{success}</Alert>}
                     {loading ?(
                             <p>Loading expenses...</p>
                         ) : error ? (
-                            <Alert type="error">{ error }</Alert>
+                            <Alert type="error" onClear={() => setError('')}>{ error }</Alert>
                         ) : expenses.length === 0 ? (
                             <Alert type="info">No expenses found</Alert>
                         ) : (
@@ -182,7 +207,7 @@ const Expenses = () => {
                                                     <EditButton onEdit={() => handleEdit(expense)}></EditButton>
                                                 </td>     
                                                 <td>
-                                                    <DeleteButton onDelete={() => handleEdit(expense)}></DeleteButton>
+                                                    <DeleteButton onDelete={() => handleDelete(expense._id)}></DeleteButton>
                                                 </td>
                                             </>
                                         )}

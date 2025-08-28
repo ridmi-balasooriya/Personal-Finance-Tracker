@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
-import { Button, Input} from "../components/ui";
+import { Button, Input, Alert} from "../components/ui";
 
 const Register = () => {
 
@@ -44,8 +44,8 @@ const Register = () => {
     return(
         <>
             <div>
-                {error && <span className="message_span error">{error}</span>}
-                {success && <span className="message_span success">{success}</span>}
+                {error && <Alert type="error" onClear={()=>setError('')}>{ error }</Alert>}
+                {success && <Alert type="success" onClear={()=>setSuccess('')}>{success}</Alert>}
                 <div>
                     <form onSubmit={handleRegister}>
                         <Input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />

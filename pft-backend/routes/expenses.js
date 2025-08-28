@@ -39,6 +39,7 @@ router.post('/', auth, async(req, res) => {
     }
 })
 
+//update expense
 router.put('/:id', auth, async (req, res) => {
     const {date, category, description, amount} = req.body;
     const userId = req.user.id;
@@ -61,10 +62,31 @@ router.put('/:id', auth, async (req, res) => {
         await expense.save();
         await expense.populate('category');
 
-        res.json({ message: 'Expense update successfully', updatedExpense: expense});
+        res.json({ message: '✅ Expense update successfully', updatedExpense: expense});
 
     }catch(err) {
         return res.status(500).json({ message: err.message })
+    }
+})
+
+//delete expense
+router.delete('/:id', auth, async (req, res) => {
+    try{
+
+        const userId = req.user.id;
+        const expense = await Expense.findOneAndDelete({
+            _id: req.params.id,
+            userId: userId,
+        })
+
+        if(!expense){
+            return res.status(404).json({ message: 'Expense not found'});
+        }
+
+        return res.json({ message: '✅ Expense delete successfully'})
+
+    }catch(err){
+        res.status(500).json({ message: err.message })
     }
 })
 

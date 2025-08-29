@@ -4,7 +4,7 @@ import api from "../api";
 import AuthContext from "../context/authContext";
 
 import ExpenseForm from "../components/expense/ExpenseForm";
-import ExpencseCategoryForm from "../components/ExpencseCategoryForm";
+import ExpencseCategoryForm from "../components/expense/ExpencseCategoryForm";
 import EditRow from "../components/expense/EditExpenseRow";
 import { Alert } from "../components/ui";
 import EditButton from "../components/ui/EditButton";

@@ -1,11 +1,12 @@
 import { useState, useContext } from "react";
-import api from "../api";
-import AuthContext from "../context/authContext";
-import {Button, Input} from "./ui";
+import api from "../../api";
+import AuthContext from "../../context/authContext";
+import {Button, Input, Alert} from "../ui";
 
 const ExpencseCategoryForm = ({onCategoryAdded}) => {
     const [categoryName, setCategoryName] = useState('');
     const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
     const { user } = useContext(AuthContext);
     
@@ -20,6 +21,7 @@ const ExpencseCategoryForm = ({onCategoryAdded}) => {
         try{
             setLoading(true);
             setError('');
+            setSuccess('');
 
             const token = user?.token;
 
@@ -27,7 +29,8 @@ const ExpencseCategoryForm = ({onCategoryAdded}) => {
                 {name: categoryName, type:'expense'},
                 { headers: {Authorization: `Bearer ${token}`}}
             );
-
+            
+            setSuccess('New category add successfully.');
             setCategoryName('');
 
             if(onCategoryAdded){
@@ -48,7 +51,8 @@ const ExpencseCategoryForm = ({onCategoryAdded}) => {
             <form onSubmit={handleSubmit}>
                 <Input type='text' placeholder='New Category' value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
                 <Button type="submit" disabled={loading} variant="primary">{loading? "Adding..." : "Add Category"}</Button>
-                {error && <span className="message_span error">{error}</span>}
+                 {success && <Alert type="success" onClear={() => setSuccess('')}>{ success }</Alert>}
+                {error && <Alert type="error" onClear={() => setError('')}>{ error }</Alert>}
             </form>
         </>
     );

@@ -1,9 +1,25 @@
-body{
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+:root {
+  --color-background: #f3f4f6;
+  --color-text: #333333;
+  --color-primary: #1e40af;  /* Blue */
+  --color-secondary: #9333ea; /* Purple */
+  --color-accent: #f59e0b;   /* Amber */
+
+  --font-heading: 'Inter', sans-serif;
+  --font-body: 'Roboto', sans-serif;
 }
-.app h1{
-  text-align: center;
-  margin:1em 0em;
+
+body{
+  font-family: var(--font-body);
+  font-weight: 300; /* default bold */
+  color:  var(--color-text);   /* optional default text color */
+  background-color:  var(--color-background);
+}
+
+h1, h2, h3{
+  font-family: var(--font-heading);
+  font-weight: 700; /* default bold */
+  color:  var(--color-text);
 }
 
 /* Button Style **/

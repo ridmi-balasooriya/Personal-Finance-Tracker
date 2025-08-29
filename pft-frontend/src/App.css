@@ -1,0 +1,76 @@
+body{
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+.app h1{
+  text-align: center;
+  margin:1em 0em;
+}
+
+/* Button Style **/
+.button{
+  border-radius: 3px;
+  padding: 5px;
+  margin:auto 5px;
+  border: thin solid;
+  box-shadow: 1px 1px #ccc;
+}
+.icon_button{
+  margin-top: 2px;
+  font-size: 2px;
+}
+.edit{
+  background:#0c7402;
+  
+}
+.delete{
+  background:#8f0101;
+  
+}
+.primary{
+    background:#fff;    
+    border-color: #ccc;
+}
+
+/* Input Style*/
+.input_div{
+  display: inline-block;
+}
+
+.input_div .default{
+  background: #fff;
+  border: thin solid #ccc;
+  padding: 5px;
+  margin: 3px;
+}
+
+.input_div .default:focus{
+  box-shadow: 1px 1px #c3c3c3;
+  outline: #fff;
+}
+
+/* Alert Span */
+.message_span {
+  display: inline-block;
+  margin: 4px 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.message_span.success {
+  background-color: #e6ffed;
+  color: #047857;
+  border: 1px solid #34d399;
+}
+
+.message_span.error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #f87171;
+}
+
+.message_span.info {
+  background-color: #eff6ff;
+  color: #1e3a8a;
+  border: 1px solid #60a5fa;
+}

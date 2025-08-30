@@ -45,20 +45,18 @@ const Login = ({setUser}) => {
 
     return(
         <>
+            <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
+            {error && <Alert type="error" onClear={()=>setError('')}>{ error }</Alert>}
             <div>
-                <h2>Login</h2>
-                {error && <Alert type="error" onClear={()=>setError('')}>{ error }</Alert>}
-                <div>
-                    <form onSubmit={handleLogin}>
-                        <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                        <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        <Button type="submit" disabled={loading} >{loading? "Login..." : "Login"}</Button>                       
-                    </form>
-                    <p>
-                        Don't have an account? <a href="/register">Register</a> |
-                        Forget your password? <a href="/forget-password">Reset Password</a>
-                    </p>
-                </div>
+                <form className="flex flex-col gap-4" onSubmit={handleLogin}>
+                    <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <Button type="submit" disabled={loading} >{loading? "Login..." : "Login"}</Button>                       
+                </form>
+                <div className="mt-3">
+                    <p className="py-1">Don't have an account? <a href="/register">Register</a></p>
+                    <p >Forget your password? <a href="/forget-password">Reset Password</a></p>
+                </div>                
             </div>
         </>
     )

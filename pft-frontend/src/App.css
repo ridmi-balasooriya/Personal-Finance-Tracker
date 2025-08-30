@@ -21,8 +21,16 @@ h1, h2, h3{
   font-weight: 700; /* default bold */
   color:  var(--color-text);
 }
+a{
+  text-decoration: underline;
+  color: #333333;
+}
+a:hover{
+  text-decoration: none;
+  font-weight: bold;
+}
 
-/* Button Style **/
+/* Button 
 .button{
   border-radius: 3px;
   padding: 5px;
@@ -33,7 +41,7 @@ h1, h2, h3{
 .icon_button{
   margin-top: 2px;
   font-size: 2px;
-}
+} 
 .edit{
   background:#0c7402;
   
@@ -41,13 +49,10 @@ h1, h2, h3{
 .delete{
   background:#8f0101;
   
-}
-.primary{
-    background:#fff;    
-    border-color: #ccc;
-}
+} Style **/
 
-/* Input Style*/
+
+/* Input 
 .input_div{
   display: inline-block;
 }
@@ -62,9 +67,9 @@ h1, h2, h3{
 .input_div .default:focus{
   box-shadow: 1px 1px #c3c3c3;
   outline: #fff;
-}
+} Style*/
 
-/* Alert Span */
+/* Alert Span
 .message_span {
   display: inline-block;
   margin: 4px 0;
@@ -89,4 +94,4 @@ h1, h2, h3{
   background-color: #eff6ff;
   color: #1e3a8a;
   border: 1px solid #60a5fa;
-}
+}  */

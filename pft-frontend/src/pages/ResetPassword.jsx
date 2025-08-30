@@ -41,7 +41,7 @@ const ResetPassword = () => {
             setLoading(true);
 
             const res = await api.post(`/auth/reset-password/${token}`, {password});
-            setSuccess(res.data.message);
+            setSuccess('Password Reset Successfully.');
             setTimeout( () => navigate('/login'), 2000);
         }
         catch(err){
@@ -54,20 +54,26 @@ const ResetPassword = () => {
     return(
         <>
             <div>
-                <h2>Reset Password</h2>
-                {success && <Alert type="success" onClear={() => setSuccess('')}>{ success }</Alert>}
+                <h2 className="text-2xl font-bold text-center mb-4">Reset Password</h2>
+                {success && <Alert type="success" onClear={() => setSuccess('')} delay = '1000000'>{ success }</Alert>}
                 {error && <Alert type="error" onClear={() => setError('')}>{ error }</Alert>}
-                {validToken ? (
+                {!success &&
                     <div>
-                        <form onSubmit={handleSubmit}>
-                            <Input type="password" placeholder="New Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                            <Input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-                            <Button type="submit" disabled={loading} >{loading? "Resetting Password..." : "Reset Password"}</Button>
-                        </form>
+                        {validToken ? (
+                            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+                                <Input type="password" placeholder="New Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                                <Input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                                <Button type="submit" disabled={loading} >{loading? "Resetting Password..." : "Reset Password"}</Button>
+                            </form>                        
+                        ) : (
+                            <Alert type="error" onClear={() => setError('')} delay = '1000000'>Invalid Token</Alert>
+                        )}
                     </div>
-                ) : (
-                    <p>Invalid Token</p>
-                )}
+                }
+                
+                <div className="mt-3">
+                    <p className="py-1">Go back to <a href="/login">Login</a> page.</p>
+                </div>
             </div>
         </>
     );

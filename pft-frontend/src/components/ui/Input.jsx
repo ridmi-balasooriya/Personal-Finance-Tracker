@@ -1,9 +1,9 @@
 const Input = ({label, type='text', value, onChange, placeholder, variant='default'}) => {
 
-    const baseStyle = 'input';
+    const baseStyle = 'w-full bg-white border border-gray-300 px-3 py-2 mb-1 focus:outline-none focus:righ-2 focus:ring-gray-300 focus:border-gray-400';
 
     return(
-        <div className="input_div">
+        <div>
             {label && <label>{label}</label>}
             <input 
                 type={type}

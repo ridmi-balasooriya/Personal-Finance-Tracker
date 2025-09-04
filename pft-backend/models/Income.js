@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const expenseSchema = new mongoose.Schema({
-    userId: { // Link expense to a user
+const incomeSchema = new mongoose.Schema({
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
@@ -11,7 +11,7 @@ const expenseSchema = new mongoose.Schema({
         required: true,
     },
     amount: {
-        type: Number, 
+        type: Number,
         required: true,
     },
     date: {
@@ -23,8 +23,8 @@ const expenseSchema = new mongoose.Schema({
         ref: 'Category',
         required: true,
     }
-});
+})
 
-const Expense = mongoose.model('Expense', expenseSchema);
+const Income = mongoose.model('Income', incomeSchema);
 
-module.exports = Expense;
+module.exports = Income;

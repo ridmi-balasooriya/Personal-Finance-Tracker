@@ -6,6 +6,7 @@ const connectDB = require('./routes/db') //MongoDB connection
 
 // Import routes
 const expenseRoutes = require('./routes/expenses');
+const incomeRoutes = require('./routes/incomes');
 const categoryRoutes = require('./routes/categories');
 const authRoutes = require('./routes/auth');
 
@@ -29,6 +30,7 @@ app.use(express.json());
 
 //Route
 app.use('/api/expenses', expenseRoutes);
+app.use('/api/incomes', incomeRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 

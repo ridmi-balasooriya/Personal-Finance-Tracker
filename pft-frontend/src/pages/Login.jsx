@@ -33,7 +33,7 @@ const Login = ({setUser}) => {
                 setUserData(userDetails)
                 login(userDetails); // Call login function from Authcontext
             }
-            navigate('/expenses');
+            navigate('/dashboard');
         }
         catch(err){
             setError('Login Failed', err);

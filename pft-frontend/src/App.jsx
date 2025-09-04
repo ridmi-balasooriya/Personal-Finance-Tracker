@@ -10,18 +10,23 @@ import Expenses from './pages/Expenses';
 import ForgetPassword from './pages/ForgetPassword';
 import ResetPassword from './pages/ResetPassword';
 
+import Dashboard from './pages/Dashboard';
+
 function App() {
   const userObject = useContext(AuthContext);
   const user = userObject.user;
   
   return(        
       <Routes>
-        <Route path='/' element={<Navigate to={user? '/expenses' : '/login'} />} />
+        <Route path='/' element={<Navigate to={user? '/dashboard' : '/login'} />} />
         <Route path='/login' element={<PublicLayout><Login /></PublicLayout>} />
         <Route path='/register' element={<PublicLayout><Register /></PublicLayout>} />
-        <Route path='/expenses' element={user? <Layout><Expenses /></Layout> : <Navigate to={'/login'} />} />
         <Route path='/forget-password' element={<PublicLayout><ForgetPassword /></PublicLayout>} />
         <Route path='/reset-password/:token' element={<PublicLayout><ResetPassword /></PublicLayout>}  />
+
+        <Route path='/dashboard' element = {user? <Layout><Dashboard /></Layout> : <Navigate to={'/login'} /> } />
+        <Route path='/expenses' element={user? <Layout><Expenses /></Layout> : <Navigate to={'/login'} />} />
+        
       </Routes>    
   )
 }

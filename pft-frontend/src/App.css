@@ -29,6 +29,22 @@ a:hover{
   text-decoration: none;
   font-weight: bold;
 }
+table{
+  border: thin solid #ccc;
+  margin: 20px 0;
+}
+table th{
+  padding: 10px 20px;
+  border: thin solid #ccc;
+  font-weight: bold;
+}
+table td{
+  padding: 10px 20px;
+  border: thin solid #ccc;
+}
+table tr td:last-child {
+  text-align: right;
+}
 
 /* Button 
 .button{

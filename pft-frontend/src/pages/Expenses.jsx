@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import AuthContext from "../context/authContext";
+import dayjs from "dayjs";
 
 import ExpenseForm from "../components/expense/ExpenseForm";
 import ExpencseCategoryForm from "../components/expense/ExpencseCategoryForm";
@@ -197,7 +198,7 @@ const Expenses = () => {
                                             ></EditRow>
                                         ):(
                                             <>
-                                                <td>{expense.date}</td>
+                                                <td>{dayjs(expense.date).format("YYYY-MM-DD")}</td>
                                                 <td>
                                                     {expense.category?.name || 'N/A'}
                                                 </td>
